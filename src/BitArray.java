@@ -1,6 +1,8 @@
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -24,16 +26,15 @@ public class BitArray implements Clusterable<BitArray>{
 
 	@Override
 	public double distance(BitArray other) {
-
-
-		return 0;
+		return IntStream.range(0,bits.size()).map(i->bits.get(i)!=other.bits.get(i) ? 1: 0).sum();
 	}
 
 	public static Set<BitArray> readClusterableSet(String path) throws IOException {
-		// TODO: Complete. If the file contains bitarrays of different lengths,
-		//  retain only those of maximal length
-		return null;
+		List<String> arr= Files.lines(Paths.get(path)).collect(Collectors.toList());
+		int max=Integer.parseInt(arr.stream().max(Comparator.comparing(String::length)).get());
+		return arr.stream().filter(l->l.length()==max).map(l-> new BitArray(l)).collect(Collectors.toSet());
 	}
+
 
 	@Override
 	public String toString() {
