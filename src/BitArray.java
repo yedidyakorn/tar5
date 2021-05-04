@@ -1,10 +1,7 @@
 
 import java.io.IOException;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -13,17 +10,22 @@ public class BitArray implements Clusterable<BitArray>{
 	private ArrayList<Boolean> bits;
 
 	public BitArray(String str){
-		Stream<String> stream=Stream.of(str);
-		bits=stream
-
+		String[] strarr=str.split(",");
+		Stream<String> stream=Stream.of(strarr);
+		bits= new ArrayList<>();
+		stream.map(s->bits.add(Boolean.valueOf(s))).collect(Collectors.toList());
 	}
 	public BitArray(boolean[] bits) {
-		//TODO
+		this.bits= new ArrayList<>();
+		for (int i=0;i< bits.length;i++) {
+			this.bits.add(bits[i]);
+		}
 	}
 
 	@Override
 	public double distance(BitArray other) {
-		// TODO: Complete
+
+
 		return 0;
 	}
 
