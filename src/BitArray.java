@@ -9,7 +9,13 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class BitArray implements Clusterable<BitArray>{
-	private ArrayList<Boolean> bits;
+
+	public ArrayList<Boolean> bits;
+
+
+
+
+
 
 	public BitArray(String str){
 		String[] strarr=str.split(",");
@@ -18,10 +24,7 @@ public class BitArray implements Clusterable<BitArray>{
 		stream.map(s->bits.add(Boolean.valueOf(s))).collect(Collectors.toList());
 	}
 	public BitArray(boolean[] bits) {
-		this.bits= new ArrayList<>();
-		for (int i=0;i< bits.length;i++) {
-			this.bits.add(bits[i]);
-		}
+		this.bits=new ArrayList<Boolean>(IntStream.range(0,bits.length).mapToObj(i->bits[i]).collect(Collectors.toList()));
 	}
 
 	@Override
