@@ -1,6 +1,9 @@
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.Set;
@@ -27,6 +30,9 @@ public class TwoDPoint implements Clusterable<TwoDPoint> {
     }
 
     public static Set<TwoDPoint> readClusterableSet(String path) throws IOException {
+        String dir1=System.getProperty("java.class.path");
+        Path pa= Paths.get(path);
+        pa=pa.toRealPath();
         return Files.lines(Paths.get(path)).map(l -> new TwoDPoint(l)).collect(Collectors.toSet());
     }
 

@@ -9,17 +9,12 @@ public class AgglomerativeClustering <T extends Clusterable<T>> implements Clust
 		this.threshold = threshold;
 	}
 	public Set<Set<T>> clusterSet(Set<T> elements) {
-		Set<Set<T>> clusters =new HashSet<>(IntStream.range(0,elements.size()).Arrays.asList(l)))).collect(Collectors.toSet());
-		List<Set<T>> c =new ArrayList<>();
-		double min = Double.MAX_VALUE;
-		elements.stream().map(l->clusters.add(new HashSet<T>(Arrays.asList(l)))).collect(Collectors.toSet());
-		elements.stream().map(l->c.add(new HashSet<T>(Arrays.asList(l)))).collect(Collectors.toSet());
 
+		Set<Set<T>> clusters=elements.stream().map(t->new HashSet<>(Set.of(t))).collect(Collectors.toSet());
+		double min = Double.MAX_VALUE;
 		List<Set<T>> minsSet = null;
 
-
 		while (clusters.size()>1){
-			//min=clusters.stream().mapToDouble(x->clusters.stream().mapToDouble(y->setsDistance(x,y))).min().getAsDouble();
 			Set<Set<T>> finalClusters = clusters;
 			clusters.stream().map(x-> finalClusters.stream().map(y->{if(setsDistance(x,y)<mindistance(minsSet)){
 																	minsSet.clear();
@@ -29,22 +24,11 @@ public class AgglomerativeClustering <T extends Clusterable<T>> implements Clust
 				return minsSet;
 			}));
 
-			IntStream.range(0,c.size()).map(x->c.stream().map
-
-//			for (Set<T> c1 :clusters){
-//				for (Set<T> c2: clusters){
-//					if(setsDistance(c1,c2)<min){
-//						min=setsDistance(c1,c2);
-//						min1=c1;
-//						min2=c2;
-//					}
-//				}
-//			}
-
 			if (min>threshold)
 				return clusters;
 			else
-				clusters=addUnion(clusters,min1,min2);
+				clusters=addUnion(clusters,minsSet.get(0),minsSet.get(1));
+			minsSet.clear();
 		}
 
 
