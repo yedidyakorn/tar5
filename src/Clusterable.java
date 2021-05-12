@@ -1,3 +1,3 @@
-public interface Clusterable <T>{
-	public double distance(T other);
+public interface Clusterable<T> {
+    public double distance(T other);
 }
