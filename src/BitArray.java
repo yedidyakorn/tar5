@@ -4,6 +4,7 @@ import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -31,10 +32,8 @@ public class BitArray implements Clusterable<BitArray> {
 
     public static Set<BitArray> readClusterableSet(String path) throws IOException {
         List<String> arr = Files.lines(Paths.get(path)).collect(Collectors.toList());
-        int max = (arr.stream().map(x->x.split(",")).map(x->x.length)).max(Integer::compare).get();
-        //List<String[]> s= (arr.stream().map(x->x.split(",")).max(Comparator.comparing(String::length)).collect(Collectors.toList()));
-        int maxi = (arr.stream().max(Comparator.comparing(String::length)).get()).length();
-        return arr.stream().filter(l -> l.length() == max).map(l -> new BitArray(l)).collect(Collectors.toSet());
+        int max = arr.stream().map(x->numOfBits(x)).max(Integer::compare).get();
+        return arr.stream().filter(x->numOfBits(x)==max).map(l -> new BitArray(l)).collect(Collectors.toSet());
     }
 
     @Override
@@ -53,5 +52,9 @@ public class BitArray implements Clusterable<BitArray> {
     @Override
     public int hashCode() {
         return Objects.hash(bits);
+    }
+
+    private static int numOfBits(String str){
+        return str.split(",").length;
     }
 }
