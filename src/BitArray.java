@@ -1,10 +1,10 @@
-
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
-import java.util.function.Function;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -22,7 +22,7 @@ public class BitArray implements Clusterable<BitArray> {
     }
 
     public BitArray(boolean[] bits) {
-        this.bits = new ArrayList<Boolean>(IntStream.range(0, bits.length).mapToObj(i -> bits[i]).collect(Collectors.toList()));
+        this.bits = new ArrayList<>(IntStream.range(0, bits.length).mapToObj(i -> bits[i]).collect(Collectors.toList()));
     }
 
     @Override
@@ -32,8 +32,8 @@ public class BitArray implements Clusterable<BitArray> {
 
     public static Set<BitArray> readClusterableSet(String path) throws IOException {
         List<String> arr = Files.lines(Paths.get(path)).collect(Collectors.toList());
-        int max = arr.stream().map(x->numOfBits(x)).max(Integer::compare).get();
-        return arr.stream().filter(x->numOfBits(x)==max).map(l -> new BitArray(l)).collect(Collectors.toSet());
+        int max = arr.stream().map(x -> numOfBits(x)).max(Integer::compare).get();
+        return arr.stream().filter(x -> numOfBits(x) == max).map(l -> new BitArray(l)).collect(Collectors.toSet());
     }
 
     @Override
@@ -54,7 +54,7 @@ public class BitArray implements Clusterable<BitArray> {
         return Objects.hash(bits);
     }
 
-    private static int numOfBits(String str){
+    private static int numOfBits(String str) {
         return str.split(",").length;
     }
 }

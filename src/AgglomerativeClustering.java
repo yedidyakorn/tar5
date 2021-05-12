@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -14,34 +11,24 @@ public class AgglomerativeClustering<T extends Clusterable<T>> implements Cluste
 
     public Set<Set<T>> clusterSet(Set<T> elements) {
 
-        Set<Set<T>> clusters = elements.stream().map(t -> new HashSet<>(Set.of(t))).collect(Collectors.toSet());
+        Set<Set<T>> clusters = elements.stream().map(t -> new HashSet<>(Collections.singleton(t))).collect(Collectors.toSet());
         double min = Double.MAX_VALUE;
         List<Set<T>> minsSet = new ArrayList<>();
 
         while (clusters.size() > 1) {
-//            Set<Set<T>> finalClusters = clusters;
-//         	clusters.stream().map(x -> finalClusters.stream().map(y -> {
-//                if (setsDistance(x, y) < minDistance(minsSet)) {
-//                    minsSet.clear();
-//                    minsSet.add(x);
-//                    minsSet.add(y);
-//                }
-//                return minsSet;
-//            }));
+            Set<Set<T>> finalClusters = clusters;
+            for (Set<T> x : clusters) {
+                for (Set<T> y : clusters) {
 
-         	for (Set<T> x:clusters){
-         	    for (Set<T> y: clusters){
-
-                    if (x!=y&&setsDistance(x, y) < minDistance(minsSet)) {
+                    if (x != y && setsDistance(x, y) < minDistance(minsSet)) {
                         minsSet.clear();
                         minsSet.add(x);
                         minsSet.add(y);
                     }
-
                 }
             }
 
-            if ( minDistance(minsSet) > threshold)
+            if (minDistance(minsSet) > threshold)
                 return clusters;
             else
                 clusters = addUnion(clusters, minsSet.get(0), minsSet.get(1));
